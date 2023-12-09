@@ -1,0 +1,273 @@
+package tictactoe;
+
+import java.util.Arrays;
+import java.util.Scanner;
+
+public class Main {
+    public static void main(String[] args) {
+        // write your code here
+        Scanner scanner = new Scanner(System.in);
+
+//        String input = scanner.nextLine();
+
+        String[][] chess = new String[5][9];
+
+        int counter = 0;
+        boolean gameNotFinished = false;
+        boolean draw = false;
+        boolean xWins = false;
+        boolean oWins = false;
+        boolean impossible = false;
+
+        for (int rows = 0; rows < 5; rows++) {
+            for (int cols = 0; cols < 9; cols++) {
+                if (rows == 0) {
+                    chess[rows][cols] = "-";
+                } else if (rows <= 3 && cols == 0) {
+                    chess[rows][cols] = "|";
+                } else if (rows <= 3 && cols % 2 == 1) {
+                    chess[rows][cols] = " ";
+                } else if (rows <= 3 && cols <= 6) {
+//                    chess[rows][cols] = input.substring(counter, counter + 1);
+//                    counter++;
+                    chess[rows][cols] = " ";
+                } else if (rows <= 3) {
+                    chess[rows][cols] = "|";
+                } else {
+                    chess[rows][cols] = "-";
+                }
+            }
+        }
+
+        for (int rows = 0; rows < 5; rows++) {
+            for (int cols = 0; cols < 9; cols++) {
+                System.out.print(chess[rows][cols]);
+            }
+            System.out.println();
+        }
+
+        boolean isCorrectInput = false;
+        int[] userInput = new int[1];
+        boolean thereIsAWinner = false;
+        int countEmptySpaces = 9;
+
+
+        while (!thereIsAWinner) {
+
+            while (!isCorrectInput) {
+                try {
+                    userInput = Arrays.stream(scanner.nextLine().split("\\s+")).mapToInt(Integer::parseInt).toArray();
+                    if (userInput[0] < 1 || userInput[0] > 3 || userInput[1] < 1 || userInput[1] > 3) {
+                        System.out.println("Coordinates should be from 1 to 3!");
+                    } else if (userInput[1] == 1) {
+                        if (!chess[userInput[0]][userInput[1] + 1].equals(" ")) {
+                            System.out.println("This cell is occupied! Choose another one!");
+                        } else {
+                            break;
+                        }
+                    } else if (userInput[1] == 2) {
+                        if (!chess[userInput[0]][userInput[1] + 2].equals(" ")) {
+                            System.out.println("This cell is occupied! Choose another one!");
+                        } else {
+                            break;
+                        }
+                    } else if (userInput[1] == 3) {
+                        if (!chess[userInput[0]][userInput[1] + 3].equals(" ")) {
+                            System.out.println("This cell is occupied! Choose another one!");
+                        } else {
+                            break;
+                        }
+                    } else {
+                        isCorrectInput = true;
+                    }
+                } catch (NumberFormatException e) {
+                    System.out.println("You should enter numbers!");
+                }
+            }
+
+            if (userInput[1] == 1 && counter % 2 == 0) {
+                chess[userInput[0]][userInput[1] + 1] = "X";
+                counter++;
+                countEmptySpaces--;
+            } else if (userInput[1] == 2 && counter % 2 == 0) {
+                chess[userInput[0]][userInput[1] + 2] = "X";
+                counter++;
+                countEmptySpaces--;
+            } else if (userInput[1] == 3 && counter % 2 == 0){
+                chess[userInput[0]][userInput[1] + 3] = "X";
+                counter++;
+                countEmptySpaces--;
+            } else if (userInput[1] == 1 && counter % 2 != 0) {
+                chess[userInput[0]][userInput[1] + 1] = "O";
+                counter++;
+                countEmptySpaces--;
+            } else if (userInput[1] == 2 && counter % 2 != 0) {
+                chess[userInput[0]][userInput[1] + 2] = "O";
+                counter++;
+                countEmptySpaces--;
+            } else if (userInput[1] == 3 && counter % 2 != 0){
+                chess[userInput[0]][userInput[1] + 3] = "O";
+                counter++;
+                countEmptySpaces--;
+            }
+
+
+            for (int rows = 0; rows < 5; rows++) {
+                for (int cols = 0; cols < 9; cols++) {
+                    System.out.print(chess[rows][cols]);
+                }
+                System.out.println();
+            }
+
+            if (chess[1][2].equals("X") && chess[1][4].equals("X") && chess[1][6].equals("X")) {
+                System.out.println("X wins");
+                thereIsAWinner = true;
+                System.exit(0);
+            } else if (chess[2][2].equals("X") && chess[2][4].equals("X") && chess[2][6].equals("X")) {
+                System.out.println("X wins");
+                thereIsAWinner = true;
+                System.exit(0);
+            } else if (chess[3][2].equals("X") && chess[3][4].equals("X") && chess[3][6].equals("X")) {
+                System.out.println("X wins");
+                thereIsAWinner = true;
+                System.exit(0);
+            } else if (chess[1][2].equals("X") && chess[2][2].equals("X") && chess[3][2].equals("X")) {
+                System.out.println("X wins");
+                thereIsAWinner = true;
+                System.exit(0);
+            } else if (chess[1][4].equals("X") && chess[2][4].equals("X") && chess[3][4].equals("X")) {
+                System.out.println("X wins");
+                thereIsAWinner = true;
+                System.exit(0);
+            } else if (chess[1][6].equals("X") && chess[2][6].equals("X") && chess[3][6].equals("X")) {
+                System.out.println("X wins");
+                thereIsAWinner = true;
+                System.exit(0);
+            } else if (chess[1][2].equals("X") && chess[2][4].equals("X") && chess[3][6].equals("X")) {
+                System.out.println("X wins");
+                thereIsAWinner = true;
+                System.exit(0);
+            } else if (chess[3][1].equals("X") && chess[2][4].equals("X") && chess[1][6].equals("X")) {
+                System.out.println("X wins");
+                thereIsAWinner = true;
+                System.exit(0);
+            } else if (chess[1][2].equals("O") && chess[1][4].equals("O") && chess[1][6].equals("O")) {
+                System.out.println("O wins");
+                thereIsAWinner = true;
+                System.exit(0);
+            } else if (chess[2][2].equals("O") && chess[2][4].equals("O") && chess[2][6].equals("O")) {
+                System.out.println("O wins");
+                thereIsAWinner = true;
+                System.exit(0);
+            } else if (chess[3][2].equals("O") && chess[3][4].equals("O") && chess[3][6].equals("O")) {
+                System.out.println("O wins");
+                thereIsAWinner = true;
+                System.exit(0);
+            } else if (chess[1][2].equals("O") && chess[2][2].equals("O") && chess[3][2].equals("O")) {
+                System.out.println("O wins");
+                thereIsAWinner = true;
+                System.exit(0);
+            } else if (chess[1][4].equals("O") && chess[2][4].equals("O") && chess[3][4].equals("O")) {
+                System.out.println("O wins");
+                thereIsAWinner = true;
+                System.exit(0);
+            } else if (chess[1][6].equals("O") && chess[2][6].equals("O") && chess[3][6].equals("O")) {
+                System.out.println("O wins");
+                thereIsAWinner = true;
+                System.exit(0);
+            } else if (chess[1][2].equals("O") && chess[2][4].equals("O") && chess[3][6].equals("O")) {
+                System.out.println("O wins");
+                thereIsAWinner = true;
+                System.exit(0);
+            } else if (chess[3][1].equals("O") && chess[2][4].equals("O") && chess[1][6].equals("O")) {
+                System.out.println("O wins");
+                thereIsAWinner = true;
+                System.exit(0);
+            } else if (!thereIsAWinner && countEmptySpaces == 0) {
+                System.out.println("Draw");
+                System.exit(0);
+            }
+        }
+
+
+
+
+
+//        int countX = 0;
+//        int countO = 0;
+//
+//        for (int rows = 0; rows < 5; rows++) {
+//            for (int cols = 0; cols < 9; cols++) {
+//                if (chess[rows][cols].equals("X")) {
+//                    countX++;
+//                } else if (chess[rows][cols].equals("O")) {
+//                    countO++;
+//                }
+//            }
+//        }
+//
+//        int difference = 0;
+//
+//        if (countX > countO) {
+//            difference = countX - countO;
+//        } else {
+//            difference = countO - countX;
+//        }
+//
+//        for (int rows = 0; rows < 5; rows++) {
+//            for (int cols = 0; cols < 9; cols++) {
+//                if (rows > 0 && rows < 4) {
+//                    if (cols > 1 && cols < 7)
+//                        if (difference > 1) {
+//                            impossible = true;
+//                            break;
+//                        } else if (chess[rows][cols].equals("X") && chess[rows][cols].equals(chess[rows][cols + 2]) && chess[rows][cols + 2].equals(chess[rows][cols + 4]) || chess[rows][cols].equals("X") && chess[rows][cols].equals(chess[rows + 1][cols + 2]) && chess[rows + 1][cols + 2].equals(chess[rows + 2][cols + 4]) || chess[rows + 2][cols].equals("X") && chess[rows + 2][cols].equals(chess[rows + 1][cols + 2]) && chess[rows + 1][cols + 2].equals(chess[rows][cols + 4]) || chess[rows][cols].equals("X") && chess[rows][cols].equals(chess[rows + 1][cols]) && chess[rows + 1][cols].equals(chess[rows + 2][cols]) || chess[rows][cols + 2].equals("X") && chess[rows][cols + 2].equals(chess[rows + 1][cols + 2]) && chess[rows + 1][cols + 2].equals(chess[rows + 2][cols + 2]) || chess[rows][cols + 4].equals("X") && chess[rows][cols + 4].equals(chess[rows + 1][cols + 4]) && chess[rows + 1][cols + 4].equals(chess[rows + 2][cols + 4])) {
+//                            xWins = true;
+//                            if (chess[rows][cols].equals("O") && chess[rows][cols].equals(chess[rows][cols + 2]) && chess[rows][cols + 2].equals(chess[rows][cols + 4]) || chess[rows][cols].equals("O") && chess[rows][cols].equals(chess[rows + 1][cols + 2]) && chess[rows + 1][cols + 2].equals(chess[rows + 2][cols + 4]) || chess[rows + 2][cols].equals("O") && chess[rows + 2][cols].equals(chess[rows + 1][cols + 2]) && chess[rows + 1][cols + 2].equals(chess[rows][cols + 4]) || chess[rows][cols].equals("O") && chess[rows][cols].equals(chess[rows + 1][cols]) && chess[rows + 1][cols].equals(chess[rows + 2][cols]) || chess[rows][cols + 2].equals("O") && chess[rows][cols + 2].equals(chess[rows + 1][cols + 2]) && chess[rows + 1][cols + 2].equals(chess[rows + 2][cols + 2]) || chess[rows][cols + 4].equals("O") && chess[rows][cols + 4].equals(chess[rows + 1][cols + 4]) && chess[rows + 1][cols + 4].equals(chess[rows + 2][cols + 4])) {
+//                                impossible = true;
+//                                break;
+//                            }
+//                            break;
+//                        } else if (chess[rows][cols].equals("O") && chess[rows][cols].equals(chess[rows][cols + 2]) && chess[rows][cols + 2].equals(chess[rows][cols + 4]) || chess[rows][cols].equals("O") && chess[rows][cols].equals(chess[rows + 1][cols + 2]) && chess[rows + 1][cols + 2].equals(chess[rows + 2][cols + 4]) || chess[rows + 2][cols].equals("O") && chess[rows + 2][cols].equals(chess[rows + 1][cols + 2]) && chess[rows + 1][cols + 2].equals(chess[rows][cols + 4]) || chess[rows][cols].equals("O") && chess[rows][cols].equals(chess[rows + 1][cols]) && chess[rows + 1][cols].equals(chess[rows + 2][cols]) || chess[rows][cols + 2].equals("O") && chess[rows][cols + 2].equals(chess[rows + 1][cols + 2]) && chess[rows + 1][cols + 2].equals(chess[rows + 2][cols + 2]) || chess[rows][cols + 4].equals("O") && chess[rows][cols + 4].equals(chess[rows + 1][cols + 4]) && chess[rows + 1][cols + 4].equals(chess[rows + 2][cols + 4])) {
+//                            oWins = true;
+//                            break;
+//                        } else if (input.contains("_")) {
+//                            gameNotFinished = true;
+//                            break;
+//                        } else {
+//                            draw = true;
+//                            break;
+//                        }
+//
+//
+//                }
+//
+//                if (impossible) {
+//                    break;
+//                } else if (xWins) {
+//                    break;
+//                } else if (oWins) {
+//                    break;
+//                } else if (gameNotFinished) {
+//                    break;
+//                } else if (draw) {
+//                    break;
+//                }
+//
+//            }
+//        }
+//
+//        if (impossible) {
+//            System.out.println("Impossible");
+//        } else if (gameNotFinished) {
+//            System.out.println("Game not finished");
+//        } else if (draw) {
+//            System.out.println("Draw");
+//        } else if (xWins) {
+//            System.out.println("X wins");
+//        } else if (oWins) {
+//            System.out.println("O wins");
+//        }
+
+    }
+}
