@@ -1,0 +1,160 @@
+package cinema;
+
+import java.util.Scanner;
+
+public class Cinema {
+
+    public static void main(String[] args) {
+        // Write your code here
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Enter the number of rows:");
+        int numberOfRows = Integer.parseInt(scanner.nextLine());
+        System.out.println("Enter the number of seats in each row:");
+        int numberOfSeatsInARow = Integer.parseInt(scanner.nextLine());
+        int userInput = 5;
+
+        int totalSeats = numberOfRows * numberOfSeatsInARow;
+        int ticketFullPrice = 10;
+        int ticketNotFullPrice = 8;
+        int totalPrice = 0;
+        int halfOfSeats = 0;
+        int firstHalfPrice = 0;
+        int secondHalfPrice = 0;
+        int currentIncome = 0;
+
+        String[][] cinemaSeats = new String[numberOfRows + 1][numberOfSeatsInARow + 1];
+
+        for (int rows = 0; rows <= numberOfRows; rows++) {
+            for (int cols = 0; cols <= numberOfSeatsInARow; cols++) {
+
+                if (rows == 0 && cols == 0) {
+                    cinemaSeats[rows][cols] = " ";
+                } else if (rows == 0 && cols != 0) {
+                    cinemaSeats[rows][cols] = String.valueOf(cols);
+                } else if (rows > 0 && cols == 0) {
+                    cinemaSeats[rows][cols] = String.valueOf(rows);
+                } else {
+                    cinemaSeats[rows][cols] = "S";
+                }
+
+            }
+
+        }
+
+        while (userInput != 0) {
+
+            System.out.println("1. Show the seats");
+            System.out.println("2. Buy a ticket");
+            System.out.println("3. Statistics");
+            System.out.println("0. Exit");
+
+            userInput = Integer.parseInt(scanner.nextLine());
+
+            if (userInput == 1) {
+
+                System.out.println("Cinema:");
+
+                for (int rows = 0; rows <= numberOfRows; rows++) {
+                    for (int cols = 0; cols <= numberOfSeatsInARow; cols++) {
+                        System.out.print(cinemaSeats[rows][cols] + " ");
+                    }
+                    System.out.println();
+                }
+
+            } else if (userInput == 2) {
+                boolean checkIfTicketIsPurchased = true;
+                int userRowInput = 0;
+                int userSeatNumberInARow = 0;
+
+                while (checkIfTicketIsPurchased) {
+                    System.out.println("Enter a row number:");
+                    userRowInput = Integer.parseInt(scanner.nextLine());
+                    System.out.println("Enter a seat number in that row:");
+                    userSeatNumberInARow = Integer.parseInt(scanner.nextLine());
+
+                    if (userRowInput > numberOfRows || userSeatNumberInARow > numberOfSeatsInARow) {
+                        System.out.println("Wrong input!");
+                    } else if (cinemaSeats[userRowInput][userSeatNumberInARow].equals("B")) {
+                        System.out.println("That ticket has already been purchased!");
+                    } else {
+                        checkIfTicketIsPurchased = false;
+                    }
+                }
+
+                cinemaSeats[userRowInput][userSeatNumberInARow] = "B";
+
+                if (totalSeats <= 60) {
+                    System.out.println("Ticket price: $" + ticketFullPrice);
+                    currentIncome += ticketFullPrice;
+                } else {
+                    if (numberOfRows % 2 == 0) {
+                        halfOfSeats = numberOfRows / 2;
+                        if (userRowInput <= halfOfSeats) {
+                            System.out.println("Ticket price: $" + ticketFullPrice);
+                            currentIncome += ticketFullPrice;
+                        } else {
+                            System.out.println("Ticket price: $" + ticketNotFullPrice);
+                            currentIncome += ticketNotFullPrice;
+                        }
+                    } else {
+                        halfOfSeats = numberOfRows / 2;
+                        if (userRowInput <= halfOfSeats) {
+                            System.out.println("Ticket price: $" + ticketFullPrice);
+                            currentIncome += ticketFullPrice;
+                        } else {
+                            System.out.println("Ticket price: $" + ticketNotFullPrice);
+                            currentIncome += ticketNotFullPrice;
+                        }
+                    }
+                }
+            } else if (userInput == 3) {
+                int counter = 0;
+                for (int rows = 0; rows < cinemaSeats.length; rows++) {
+                    for (int cols = 0; cols < cinemaSeats[rows].length; cols++) {
+                        if (cinemaSeats[rows][cols].equals("B")) {
+                            counter++;
+                        }
+                    }
+                }
+
+                System.out.println("Number of purchased tickets: " + counter);
+                double currentIncomeInPercentage = ((double) counter / totalSeats) * 100;
+                System.out.printf("Percentage: %.2f", currentIncomeInPercentage);
+                System.out.print("%");
+                System.out.print("\n");
+
+                if (totalSeats <= 60) {
+                    totalPrice = totalSeats * ticketFullPrice;
+                } else {
+                    if (numberOfRows % 2 == 0) {
+                        halfOfSeats = numberOfRows / 2;
+                        firstHalfPrice = (halfOfSeats * numberOfSeatsInARow) * ticketFullPrice;
+                        secondHalfPrice = (halfOfSeats * numberOfSeatsInARow) * ticketNotFullPrice;
+                        totalPrice = firstHalfPrice + secondHalfPrice;
+                    } else {
+                        halfOfSeats = numberOfRows / 2;
+                        firstHalfPrice = (halfOfSeats * numberOfSeatsInARow) * ticketFullPrice;
+                        secondHalfPrice = ((halfOfSeats + 1) * numberOfSeatsInARow) * ticketNotFullPrice;
+                        totalPrice = firstHalfPrice + secondHalfPrice;
+                    }
+                }
+
+                System.out.println("Current income: $" + currentIncome);
+                System.out.println("Total income: $" + totalPrice);
+//                    System.out.print("$" + totalPrice);
+            }
+        }
+//
+//
+//
+//        System.out.println("Cinema:");
+//
+//        for (int rows = 0; rows <= numberOfRows; rows++) {
+//            for (int cols = 0; cols <= numberOfSeatsInARow; cols++) {
+//                System.out.print(cinemaSeats[rows][cols] + " ");
+//            }
+//            System.out.println();
+//        }
+
+    }
+}
