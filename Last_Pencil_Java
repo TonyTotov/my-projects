@@ -1,0 +1,242 @@
+package lastpencil;
+
+import java.util.Arrays;
+import java.util.Random;
+import java.util.Scanner;
+
+public class Main {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("How many pencils would you like to use:");
+        String userInput = scanner.nextLine();
+        boolean checkIfNumeric = false;
+        int pencilsToPlayWith = 0;
+
+        while (true) { //check the first input
+
+            if (!checkIfNumeric) {
+                try {
+                    pencilsToPlayWith = Integer.parseInt(userInput);
+                    checkIfNumeric = true;
+                } catch (NumberFormatException e) {
+                    System.out.println("The number of pencils should be numeric");
+                    userInput = scanner.nextLine();
+                    checkIfNumeric = false;
+                }
+            } else if (pencilsToPlayWith == 0) {
+                System.out.println("The number of pencils should be positive");
+                checkIfNumeric = false;
+                userInput = scanner.nextLine();
+            } else if (pencilsToPlayWith < 0) {
+                System.out.println("The number of pencils should be numeric");
+                checkIfNumeric = false;
+                userInput = scanner.nextLine();
+            } else if (checkIfNumeric && pencilsToPlayWith > 0) {
+                break;
+            } else {
+                userInput = scanner.nextLine();
+                checkIfNumeric = false;
+            }
+
+        }
+
+        String[] visualizeThePencilsThatWePlayWith = new String[pencilsToPlayWith];
+        Arrays.fill(visualizeThePencilsThatWePlayWith, "|");
+        System.out.println("Who will be the first (John, Jack):");
+        String player = scanner.nextLine();
+
+        while (true) { //check player's name
+
+            if (player.equals("Jack")) {
+                for (String s : visualizeThePencilsThatWePlayWith) {
+                    System.out.print(s);
+                }
+                System.out.println();
+                break;
+            } else if (player.equals("John")) {
+                for (String s : visualizeThePencilsThatWePlayWith) {
+                    System.out.print(s);
+                }
+                System.out.println();
+                break;
+            } else {
+                System.out.println("Choose between 'John' and 'Jack'");
+                player = scanner.nextLine();
+            }
+
+        }
+        
+        checkIfNumeric = false;
+        int turnCounter = 0;
+        int pencilsToBeRemoved = 0;
+        int[] firstArrayCheck = new int[pencilsToPlayWith];
+        firstArrayCheck[0] = 5;
+        boolean firstCheck = false;
+        for (int i = 1; i < firstArrayCheck.length; i++) {
+            firstArrayCheck[i] = firstArrayCheck[i - 1] + 4;
+        }
+
+        int[] secondArrayCheck = new int[pencilsToPlayWith];
+        secondArrayCheck[0] = 4;
+        boolean secondCheck = false;
+        for (int i = 1; i < secondArrayCheck.length; i++) {
+            secondArrayCheck[i] = secondArrayCheck[i - 1] + 4;
+        }
+
+        int[] thirdArrayCheck = new int[pencilsToPlayWith];
+        thirdArrayCheck[0] = 3;
+        boolean thirdCheck = false;
+        for (int i = 1; i < thirdArrayCheck.length; i++) {
+            thirdArrayCheck[i] = thirdArrayCheck[i - 1] + 4;
+        }
+
+        int[] fourthArrayCheck = new int[pencilsToPlayWith];
+        fourthArrayCheck[0] = 2;
+        boolean fourthCheck = false;
+        for (int i = 1; i < fourthArrayCheck.length; i++) {
+            fourthArrayCheck[i] = fourthArrayCheck[i - 1] + 4;
+        }
+
+        while (pencilsToPlayWith != 0) {
+
+            if (turnCounter % 2 == 0) {
+
+                if (player.equals("Jack")) {
+                    System.out.println("Jack's turn:");
+                } else if (player.equals("John")) {
+                    System.out.println("John's turn:");
+                }
+
+                userInput = scanner.nextLine();
+
+                while (true) {
+
+                    if (!checkIfNumeric) {
+                        try {
+                            pencilsToBeRemoved = Integer.parseInt(userInput);
+                            checkIfNumeric = true;
+                        } catch (NumberFormatException e) {
+                            System.out.println("Possible values: '1', '2' or '3'");
+                            checkIfNumeric = false;
+                            userInput = scanner.nextLine();
+                        }
+                    } else if (pencilsToBeRemoved < 1 || pencilsToBeRemoved > 3) {
+                        System.out.println("Possible values: '1', '2' or '3'");
+                        checkIfNumeric = false;
+                        userInput = scanner.nextLine();
+                    } else if (pencilsToPlayWith - pencilsToBeRemoved < 0) {
+                        System.out.println("Too many pencils were taken");
+                        checkIfNumeric = false;
+                        userInput = scanner.nextLine();
+                    } else {
+                        pencilsToPlayWith -= pencilsToBeRemoved;
+                        String[] removedPencilsVisualizer = new String[pencilsToPlayWith];
+                        Arrays.fill(removedPencilsVisualizer, "|");
+
+                        if (removedPencilsVisualizer.length == 0) {
+                            System.out.print("");
+                        } else {
+                            for (String s : removedPencilsVisualizer) {
+                                System.out.print(s);
+                            }
+                            System.out.println();
+                        }
+
+                        checkIfNumeric = false;
+                        turnCounter++;
+                        break;
+                    }
+
+                }
+
+            } else {
+
+                if (player.equals("Jack")) {
+                    System.out.println("John's turn!");
+                } else if (player.equals("John")) {
+                    System.out.println("Jack's turn!");
+                }
+
+                for (int j : firstArrayCheck) {
+                    if (j == pencilsToPlayWith) {
+                        firstCheck = true;
+                        break;
+                    }
+                }
+
+                for (int j : secondArrayCheck) {
+                    if (j == pencilsToPlayWith) {
+                        secondCheck = true;
+                        break;
+                    }
+                }
+
+                for (int j : thirdArrayCheck) {
+                    if (j == pencilsToPlayWith) {
+                        thirdCheck = true;
+                        break;
+                    }
+                }
+
+                for (int j : fourthArrayCheck) {
+                    if (j == pencilsToPlayWith) {
+                        fourthCheck = true;
+                        break;
+                    }
+                }
+
+                if (pencilsToPlayWith == 1) {
+                    pencilsToPlayWith -= 1;
+                    turnCounter++;
+                    System.out.println(1);
+                } else if (firstCheck) {
+                    Random randomNumber = new Random();
+                    pencilsToBeRemoved = randomNumber.nextInt(1, 3);
+                    pencilsToPlayWith -= pencilsToBeRemoved;
+                    turnCounter++;
+                    System.out.println(pencilsToBeRemoved);
+                    firstCheck = false;
+                } else if (secondCheck) {
+                    pencilsToPlayWith -= 3;
+                    System.out.println(3);
+                    turnCounter++;
+                    secondCheck = false;
+                } else if (thirdCheck) {
+                    pencilsToPlayWith -= 2;
+                    System.out.println(2);
+                    turnCounter++;
+                    thirdCheck = false;
+                } else if (fourthCheck) {
+                    pencilsToPlayWith -= 1;
+                    turnCounter++;
+                    System.out.println(1);
+                    fourthCheck = false;
+                }
+
+                String[] removedPencilsVisualizer = new String[pencilsToPlayWith];
+                Arrays.fill(removedPencilsVisualizer, "|");
+
+                if (removedPencilsVisualizer.length == 0) {
+                    System.out.print("");
+                } else {
+                    for (String s : removedPencilsVisualizer) {
+                        System.out.print(s);
+                    }
+                    System.out.println();
+                }
+            }
+            
+        }
+
+        if (player.equals("Jack") && turnCounter % 2 == 0) {
+            System.out.println("Jack won!");
+        } else if (player.equals("John") && turnCounter % 2 == 0) {
+            System.out.println("John won!");
+        } else if (player.equals("John")) {
+            System.out.println("Jack won!");
+        } else if (player.equals("Jack")) {
+            System.out.println("John won!");
+        }
+
+    }
+}
